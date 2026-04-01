@@ -154,8 +154,8 @@ class DetectDoubleHelices(ModuleBase):
                 for t_ind in range(im.data_xyztc.shape[3]):
                     frame = im.data_xyztc[:, :, z_ind, t_ind, c_ind]
                     # transpose frame because detector didn't originally match PYME XY convention
-                    strength_image, angle_image = detector.filter_frame(frame.squeeze().T)
-                    strength[:, :, z_ind, t_ind, c_ind] = strength_image
+                    strength_image, angle_image = detector.filter_frame(frame.T.squeeze())
+                    strength[:, :, z_ind, t_ind, c_ind] = strength_image.T
                     noise_sigma = fitTask.calcSigma(im.mdh, frame)
                     row, col, angle = detector.extract_candidates(strength_image, angle_image,
                                                                 detector.normFactor * (self.thresh * noise_sigma.T.squeeze())**2)
